@@ -1,0 +1,6 @@
+projectKey=building-green-back
+serverUrl=http://localhost:9000
+serverVersion=8.4.0.35506
+dashboardUrl=http://localhost:9000/dashboard?id=building-green-back
+ceTaskId=AXSWFJJcRwvTc5fMWPlw
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXSWFJJcRwvTc5fMWPlw
