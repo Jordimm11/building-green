@@ -32,7 +32,7 @@ function calc(answers) {
           break;
         case '4':
           if (answers[key].input === 'true') {
-            answers[key].score = 1;
+            answers[key].score = 2;
           } else {
             answers[key].score = 0;
           }
@@ -71,7 +71,7 @@ function calc(answers) {
           break;
         case '9':
           if (answers[key].input === 'true') {
-            answers[key].score = 1;
+            answers[key].score = 2;
           } else {
             answers[key].score = 0;
           }
@@ -92,7 +92,7 @@ function calc(answers) {
           break;
         case '12':
           if (answers[key].input === 'true') {
-            answers[key].score = 1;
+            answers[key].score = 2;
           } else {
             answers[key].score = 0;
           }
