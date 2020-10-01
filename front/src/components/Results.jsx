@@ -15,10 +15,11 @@ function Results() {
 
   let project = JSON.parse(sessionStorage.project);
   const [scores, setScores] = useState([]);
+  const [allScores, setAllScores] = useState([]);
   const [wait, setWait] = useState(false);
 
   let data = scores;
-  const percentage = (data.reduce((a, b) => a + b, 0) / data.length).toFixed();
+  const total = (allScores.reduce((a, b) => a + b, 0)).toFixed();
 
   function waiting() {
     setWait(false)
@@ -40,7 +41,7 @@ function Results() {
 
   function onChange() {
     setScores(projectStore.getScoresByCat());
-
+    setAllScores(projectStore.getArrAllScores());
   }
 
 
@@ -68,7 +69,7 @@ function Results() {
           <div className="results-container__img">
             <h3>{`Resultados Proyecto: ${project.data.projectName}`}</h3>
 
-            <CircularProgressbar className="results-container__circle" value={percentage} text={`${percentage}%`} />
+            <CircularProgressbar className="results-container__circle" value={total} text={`${total} p`} />
 
             <div className="results-container__img-pics">
               <img src={loc} alt="Localización" />

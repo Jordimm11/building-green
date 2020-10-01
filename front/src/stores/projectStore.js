@@ -13,6 +13,7 @@ let _credits = [];
 let _questions = [];
 let uniqQuestion = [];
 let _scoresPercent = [];
+let _arrAllScores = [];
 
 function addScoresByCat(scores) {
   let scoresByCat = [];
@@ -37,6 +38,18 @@ function addScoresByCat(scores) {
   scoresByCat = [...scoresByCat, cat1Percent, cat2Percent, cat3Percent];
   return scoresByCat;
 }
+
+function allScores(scores) {
+  let arrScores = [];
+
+  for (let key in scores) {
+    try {
+      arrScores.push(scores[key].score)
+    } catch { }
+  }
+  return arrScores;
+}
+
 class ProjectStore extends EventEmitter {
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
@@ -64,6 +77,10 @@ class ProjectStore extends EventEmitter {
 
   getScoresByCat() {
     return _scoresPercent;
+  }
+
+  getArrAllScores() {
+    return _arrAllScores;
   }
 
   getProjects() {
@@ -124,7 +141,7 @@ dispatcher.register((action) => {
     case actionTypes.GET_SCORES:
       _scores = action.data;
       _scoresPercent = addScoresByCat(_scores);
-      console.log(_scoresPercent);
+      _arrAllScores = allScores(_scores);
       projectStore.emitChange(_scoresPercent);
       break;
 
