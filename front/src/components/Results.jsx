@@ -31,62 +31,38 @@ function Results({ match }) {
     setTimeout(() => {
       //si ve de la llista
       if (project && project.answers) {
-
         setScores(projectStore.getScoresByCat(project.answers));
-        console.log(project);
-
       } else {
-        //si creas un projecte nou
-        getScores(match.params.projectId);
-
         setProject(projectStore.getProjectById(match.params.projectId));
-        console.log(project);
-
-        console.log(scores);
-
+        setAllScores(projectStore.getArrAllScores());
       }
       setWait(true)
     }, 1000);
   }
 
   useEffect(() => {
-    console.log(project);
     projectStore.addChangeListener(onChange);
     if (!wait) {
       getScores(match.params.projectId);
 
       waiting();
       loadProjects(user.data.userId);
-
-      console.log(scores);
-
     }
     if (project) {
-      //getScores(match.params.projectId);
-
-      console.log(scores);
-      console.log(project);
-
+      setScores(projectStore.getScoresByCat(project.answers));
     }
-    console.log(project);
 
     return () => projectStore.removeChangeListener(onChange);
 
   }, [wait]);
 
   function onChange() {
-
     if (project) {
       setAllScores(projectStore.getArrAllScores());
       setScores(projectStore.getScoresByCat(project.answers));
     }
-
-    console.log(scores);
-
   }
-  console.log(project);
 
-  console.log(scores);
 
   return (
 
