@@ -15,7 +15,6 @@ export function loadQuestions() {
 }
 
 export function loadProjects(userId) {
-
   const props = { params: { userId } };
 
   return axios.get('/api/projects', props).then((projects) => {
@@ -60,8 +59,7 @@ export function saveAnswers(answers) {
 }
 
 export function getScores(idProject) {
-
-  return axios.get(`api/projects/${idProject}/scores`).then((scores) => {
+  return axios.get(`/api/projects/${idProject}/scores`).then((scores) => {
     dispatcher.dispatch({
       type: actionTypes.GET_SCORES,
       data: scores.data

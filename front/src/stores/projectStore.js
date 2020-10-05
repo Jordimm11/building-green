@@ -75,9 +75,6 @@ class ProjectStore extends EventEmitter {
     return _scores;
   }
 
-  getScoresByCat() {
-    return _scoresPercent;
-  }
 
   getArrAllScores() {
     return _arrAllScores;
@@ -104,6 +101,14 @@ class ProjectStore extends EventEmitter {
 
   getQuestionsName() {
     return uniqQuestion.map(quest => quest.text);
+  }
+
+  getProjectById(projectId) {
+    return _projects && _projects.filter(project => project._id === projectId)[0];
+  }
+
+  getScoresByCat(answers) {
+    return addScoresByCat(answers)
   }
 }
 

@@ -8,6 +8,7 @@ import ApartmentIcon from '@material-ui/icons/Apartment';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { deleteProject, loadProjects } from '../actions/projectActions';
+import { withRouter } from "react-router";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -19,18 +20,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function ProjectsList(props) {
+function ProjectsList({ history, projects }) {
   const classes = useStyles();
 
   let user = JSON.parse(sessionStorage.user);
-
-  let projects = props.projects;
 
   async function onDelete(event, projectName) {
     event.preventDefault();
     await deleteProject(projectName);
 
     await loadProjects(user.data.userId);
+  }
+
+  function navigateToResults(event, project) {
+    event.preventDefault();
+    history.push(`/results/${project._id}`);
   }
 
 
@@ -40,20 +44,21 @@ export default function ProjectsList(props) {
       <List component="nav" aria-label="projects list">
 
         {projects.map((project) => (
-
-          <ListItem
-            key={project._id}
-            button
-          >
-            <ListItemIcon>
-              <ApartmentIcon />
-            </ListItemIcon>
-            <ListItemText primary={project.projectName} />
+          <>
+            <ListItem
+              key={project._id}
+              button
+              onClick={(event) => navigateToResults(event, project)}
+            >
+              <ListItemIcon>
+                <ApartmentIcon />
+              </ListItemIcon>
+              <ListItemText primary={project.projectName} />
+            </ListItem>
             <IconButton aria-label="delete" onClick={(event) => onDelete(event, project.projectName)}>
               <DeleteIcon />
             </IconButton>
-          </ListItem>
-
+          </>
         ))}
 
       </List>
@@ -61,3 +66,5 @@ export default function ProjectsList(props) {
     </div>
   );
 }
+
+export default withRouter(ProjectsList);

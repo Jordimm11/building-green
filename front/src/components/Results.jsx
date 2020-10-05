@@ -7,43 +7,86 @@ import sispas from '../img/sispas.png';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import projectStore from '../stores/projectStore';
-import { getScores } from '../actions/projectActions';
+import { getScores, loadProjects } from '../actions/projectActions';
 import LinearBuffer from './LinearBuffer';
 
 
-function Results() {
 
-  let project = JSON.parse(sessionStorage.project);
+function Results({ match }) {
+
   const [scores, setScores] = useState([]);
+  const [project, setProject] = useState(projectStore.getProjectById(match.params.projectId));
   const [allScores, setAllScores] = useState([]);
   const [wait, setWait] = useState(false);
 
-  let data = scores;
-  const total = (allScores.reduce((a, b) => a + b, 0)).toFixed();
+  let user = JSON.parse(sessionStorage.user);
+
+
+  let total = (allScores.reduce((a, b) => a + b, 0)).toFixed();
+
 
   function waiting() {
     setWait(false)
 
     setTimeout(() => {
-      getScores(project.data._id);
+      //si ve de la llista
+      if (project && project.answers) {
+
+        setScores(projectStore.getScoresByCat(project.answers));
+        console.log(project);
+
+      } else {
+        //si creas un projecte nou
+        getScores(match.params.projectId);
+
+        setProject(projectStore.getProjectById(match.params.projectId));
+        console.log(project);
+
+        console.log(scores);
+
+      }
       setWait(true)
-    }, 4000);
+    }, 1000);
   }
 
   useEffect(() => {
+    console.log(project);
     projectStore.addChangeListener(onChange);
     if (!wait) {
+      getScores(match.params.projectId);
+
       waiting();
+      loadProjects(user.data.userId);
+
+      console.log(scores);
+
     }
+    if (project) {
+      //getScores(match.params.projectId);
+
+      console.log(scores);
+      console.log(project);
+
+    }
+    console.log(project);
+
     return () => projectStore.removeChangeListener(onChange);
 
-  }, [scores.length, wait]);
+  }, [wait]);
 
   function onChange() {
-    setScores(projectStore.getScoresByCat());
-    setAllScores(projectStore.getArrAllScores());
-  }
 
+    if (project) {
+      setAllScores(projectStore.getArrAllScores());
+      setScores(projectStore.getScoresByCat(project.answers));
+    }
+
+    console.log(scores);
+
+  }
+  console.log(project);
+
+  console.log(scores);
 
   return (
 
@@ -63,11 +106,11 @@ function Results() {
           <LinearBuffer />
         </div>
       )}
-      {wait && (
+      {wait && project && scores.length && total > 1 && (
         <div className="results-container">
-          <BarChart data={data} />
+          <BarChart data={scores} />
           <div className="results-container__img">
-            <h3>{`Resultados Proyecto: ${project.data.projectName}`}</h3>
+            <h3>{`Resultados Proyecto: ${project.projectName}`}</h3>
 
             <CircularProgressbar className="results-container__circle" value={total} text={`${total} p`} />
 

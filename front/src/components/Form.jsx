@@ -156,7 +156,7 @@ function Form({ step, stepChange }) {
                           <Button
                             variant="contained"
                             color="warning"
-                            href="/results"
+                            href={`/results/${project.data._id}`}
                             className={classes.button}
                             style={{ backgroundColor: "orange" }}
                           >
