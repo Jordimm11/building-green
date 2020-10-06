@@ -22,7 +22,7 @@ export default function Header() {
         <ul className="menu">
           <li><a href="/">HOME</a></li>
           <li><a href="/project-register">Proyectos</a></li>
-          <li><a href="/results">Resultados</a></li>
+          <li><a href="/profile">Perfil</a></li>
           <li> {isAuthenticated ? (
             <LogoutButton className="header__logButton" />
           ) : (

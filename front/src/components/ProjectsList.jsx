@@ -44,7 +44,7 @@ function ProjectsList({ history, projects }) {
       <List component="nav" aria-label="projects list">
 
         {projects.map((project) => (
-          <>
+          <div key={project._id} style={{ display: "flex" }} >
             <ListItem
               key={project._id}
               button
@@ -58,7 +58,7 @@ function ProjectsList({ history, projects }) {
             <IconButton aria-label="delete" onClick={(event) => onDelete(event, project.projectName)}>
               <DeleteIcon />
             </IconButton>
-          </>
+          </div>
         ))}
 
       </List>

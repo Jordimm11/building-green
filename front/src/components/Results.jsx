@@ -23,7 +23,11 @@ function Results({ match }) {
 
 
   let total = (allScores.reduce((a, b) => a + b, 0)).toFixed();
-
+  console.log(total);
+  if (!project) {
+    getScores(match.params.projectId);
+    console.log(project);
+  }
 
   function waiting() {
     setWait(false)
@@ -43,8 +47,8 @@ function Results({ match }) {
   useEffect(() => {
     projectStore.addChangeListener(onChange);
     if (!wait) {
-      getScores(match.params.projectId);
 
+      getScores(match.params.projectId);
       waiting();
       loadProjects(user.data.userId);
     }
@@ -57,12 +61,17 @@ function Results({ match }) {
   }, [wait]);
 
   function onChange() {
+
     if (project) {
       setAllScores(projectStore.getArrAllScores());
       setScores(projectStore.getScoresByCat(project.answers));
     }
+
   }
 
+
+  console.log(project);
+  console.log(scores);
 
   return (
 
@@ -82,7 +91,7 @@ function Results({ match }) {
           <LinearBuffer />
         </div>
       )}
-      {wait && project && scores.length && total > 1 && (
+      {wait && scores.length && total > 1 && project && (
         <div className="results-container">
           <BarChart data={scores} />
           <div className="results-container__img">

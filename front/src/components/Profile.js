@@ -5,6 +5,7 @@ import './Profile.scss';
 import LogoutButton from './logoutButton';
 import { saveUser } from '../actions/authActions';
 import authStore from '../stores/authStore';
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 
 
 const Profile = () => {
@@ -48,21 +49,31 @@ const Profile = () => {
   });
 
 
-
   return (
-    isAuthenticated && (
-      <div className="profile-container">
-        <div >
-          <img src={user.picture} alt={user.name} width="200px" />
-          <h2>{user.name}</h2>
-          <p>{user.email}</p>
-        </div><br />
-        <div style={{ width: "130px" }} >
-          <LogoutButton />
+    <>
+      {isAuthenticated ? (
+        <div className="profile-container">
+          <div >
+            <img src={user.picture} alt={user.name} width="200px" />
+            <h2>{user.name}</h2>
+            <p>{user.email}</p>
+          </div><br />
+          <div style={{ width: "130px" }} >
+            <LogoutButton />
+          </div>
         </div>
-      </div>
-    )
+      ) : (
+          <p style={{
+            marginTop: "80px",
+            marginBottom: "60px",
+            textAlign: "center",
+          }}>Entre con su usuario para ver su perfil, gracias</p>
+        )
+      }
+    </>
   );
-};
+}
 
-export default Profile;
+export default withAuthenticationRequired(Profile, {
+  onRedirecting: () => (<div>Loading...</div>)
+});
